@@ -1,21 +1,27 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [RequireComponent(typeof(Transform))]
 public class Graph : MonoBehaviour {
-    [SerializeField] private Transform pointPrefab;
+    [SerializeField]
+    private Transform pointPrefab;
 
-    [SerializeField, Range(10, 100)] private byte resolution = 127;
+    [SerializeField, Range(10, 200)]
+    private long resolution = 100;
 
-    [SerializeField] private FunctionLibrary.FunctionName function;
+    [SerializeField]
+    private FunctionLibrary.FunctionName function;
 
     private enum TransitionMode {
         Cycle,
         Random
     }
 
-    [SerializeField] private TransitionMode _transitionMode;
+    [SerializeField]
+    private TransitionMode transitionMode;
 
-    [SerializeField, Min(0f)] private float functionDuration = 1f, transitionDuration = 1f;
+    [SerializeField, Min(0f)]
+    private float functionDuration = 1f, transitionDuration = 1f;
 
     private Transform[] _points;
 
@@ -40,11 +46,10 @@ public class Graph : MonoBehaviour {
 
     private void Update() {
         _duration += Time.deltaTime;
-        if (_transitioning) {
-            if (_duration >= transitionDuration) {
-                _duration -= transitionDuration;
-                _transitioning = false;
-            }
+
+        if (_transitioning && _duration >= transitionDuration) {
+            _duration -= transitionDuration;
+            _transitioning = false;
         }
         else if (_duration >= functionDuration) {
             _duration -= functionDuration;
@@ -62,7 +67,7 @@ public class Graph : MonoBehaviour {
     }
 
     private void PickNextFunction() {
-        function = _transitionMode == TransitionMode.Cycle
+        function = transitionMode == TransitionMode.Cycle
             ? FunctionLibrary.GetNextFunctionName(function)
             : FunctionLibrary.GetRandomFunctionNameOtherThan(function);
     }

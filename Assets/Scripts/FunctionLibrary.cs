@@ -14,13 +14,14 @@ public static class FunctionLibrary {
 
     private static Function[] _functions = { Wave, MultiWave, Ripple, Sphere, Torus };
 
-    public static Function GetFunction(FunctionName name) {
-        return _functions[(int)name % _functions.Length];
-    }
+    public static Function GetFunction(FunctionName name) => _functions[(int)name];
 
-    public static FunctionName GetNextFunctionName(FunctionName name) {
-        return (int)name < _functions.Length - 1 ? name + 1 : 0;
-    }
+    public static int FunctionCount => _functions.Length;
+
+
+    public static FunctionName GetNextFunctionName(FunctionName name) =>
+        (int)name < _functions.Length - 1 ? name + 1 : 0;
+
 
     public static FunctionName GetRandomFunctionNameOtherThan(FunctionName name) {
         while (true) {
